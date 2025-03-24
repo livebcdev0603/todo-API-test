@@ -1,17 +1,9 @@
 const express = require('express');
 const { body, validationResult } = require('express-validator');
 const userController = require('../controllers/userController');
+const validateRequest = require('../middleware/validateRequest');
 
 const router = express.Router();
-
-// Validation middleware
-const validateRequest = (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-  next();
-};
 
 // Get all users
 router.get('/', userController.getAllUsers);
