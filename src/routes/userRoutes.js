@@ -1,29 +1,46 @@
-const express  = require('express');
-const { body } = require('express-validator');
+const express = require('express');
+const { body, validationResult } = require('express-validator');
 const userController = require('../controllers/userController');
-const authMiddleware = require('../middleware/authMiddleware');
-const validateRequest = require('../middleware/validateRequest');
 
 const router = express.Router();
 
-// Validation Middleware
-const createValidation = [
+// Validation middleware
+const validateRequest = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  next();
+};
+
+// Get all users
+router.get('/', userController.getAllUsers);
+
+// Get user by ID
+router.get('/:id', userController.getUserById);
+
+// Create a new user
+router.post('/',
+  [
     body('name').notEmpty().withMessage('Name is required'),
     body('email').isEmail().withMessage('Valid email is required'),
-    body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
+    body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters')
+  ],
+  validateRequest,
+  userController.createUser
+);
 
-]
+// Update a user
+router.put('/:id',
+  [
+    body('name').optional().notEmpty().withMessage('Name cannot be empty'),
+    body('email').optional().isEmail().withMessage('Valid email is required')
+  ],
+  validateRequest,
+  userController.updateUser
+);
 
-const updateValidation = [
-    body('name').notEmpty().withMessage('Name is required'),
-    body('email').isEmail().withMessage('Valid email is required'),
-]
-
-//Routes
-router.post('/', createValidation, validateRequest, userController.createUser);
-router.put('/:id', updateValidation, validateRequest, userController.updateUser);
-router.delete('/:id', validateRequest, userController.deleteUser);
-router.get('/:id', validateRequest, userController.getUserById);
-
+// Delete a user
+router.delete('/:id', userController.deleteUser);
 
 module.exports = router;
