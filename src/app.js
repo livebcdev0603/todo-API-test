@@ -6,6 +6,7 @@ const { sequelize, testConnection } = require("./config/database");
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const taskRoutes = require('./routes/taskRoutes');
+const projectRoutes = require('./routes/proejctRoutes');
 
 //Initialize express app
 const app = express();
@@ -25,6 +26,7 @@ if(process.env.NODE_ENV !== 'test') {
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/tasks', taskRoutes);
+app.use('/api/projects', projectRoutes);
 
 //404 handler
 app.use((req, res) => {
