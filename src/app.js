@@ -3,6 +3,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 
 const { sequelize, testConnection } = require("./config/database");
+const authRoutes = require('./routes/authRoutes');
 
 //Initialize express app
 const app = express();
@@ -16,6 +17,10 @@ app.use(express.json());
 if(process.env.NODE_ENV !== 'test') {
     testConnection();
 } 
+
+
+//Routes
+app.use('/api/auth', authRoutes);
 
 //404 handler
 app.use((req, res) => {
