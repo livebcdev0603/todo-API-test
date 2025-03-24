@@ -4,6 +4,7 @@ const helmet = require("helmet");
 
 const { sequelize, testConnection } = require("./config/database");
 const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 //Initialize express app
 const app = express();
@@ -21,6 +22,7 @@ if(process.env.NODE_ENV !== 'test') {
 
 //Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 
 //404 handler
 app.use((req, res) => {
