@@ -86,11 +86,9 @@ const cleanupOldArchives = async (retentionDays) => {
 
                     if(stats.mtime < cutoffDate) {
                         fs.unlinkSync(filePath);
-                        logger.info(`Deleted old log archive: ${filePath}`;)
+                        logger.info(`Deleted old log archive: ${filePath}`);
                     }
                 }
-
-                
             }
             if(fs.readdirSync(monthPath).length === 0) {
                 fs.rmdirSync(monthPath);
