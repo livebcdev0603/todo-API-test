@@ -1,4 +1,4 @@
-const { logger } = require("../utils/auditLogger");
+const { logger } = require("../../utils/auditLogger");
 
 const requestLogger = (req, res, next) => {
     const originalSend = res.send;
